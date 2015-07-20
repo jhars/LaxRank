@@ -1,0 +1,161 @@
+var
+express = require('express'),
+fs = require('fs'),
+request = require('request'),
+cheerio = require('cheerio'),
+app     = express(),
+_ = require('underscore');
+// bodyParser = require('body-parser'),
+// mongoose = require('mongoose'),
+
+// TeamPoster = require("./models/teamPoster");
+
+//------------Linking to Public Folder------//
+// app.use(bodyParser.urlencoded({extended: true}));
+// app.use(express.static(__dirname + '/public'));
+// //----Connects to localhost to Database------//
+// mongoose.connect('mongodb://localhost/teamposts');
+
+var scraper = function(
+    $('#content_well > div.cs1 > left > dt > dl > div:nth-child(3) > div.cs1 > pre')).map(function(){
+                var data = $(this);
+                teams = data.text().split("\n");
+                michTeams.teams = teams;
+                var allTeams  //=?See Mongo Relationships lab
+                =[];
+//-------------------SLICER----------------------//  
+                for(i=13;i<teams.length;i++){
+                teamFile = teams[i];
+                var rankSplitter = teamFile.split('');
+//---------oneTeam-Object-Constructor-------------//
+                rank = rankSplitter[0]+rankSplitter[1]+rankSplitter[2];
+                rating = rankSplitter[30]
+                        +rankSplitter[31]
+                        +rankSplitter[32]
+                        +rankSplitter[33]
+                        +rankSplitter[34];
+                team = rankSplitter[4]+rankSplitter[5]+rankSplitter[6]
+                        +rankSplitter[7]+rankSplitter[8]+rankSplitter[9]
+                        +rankSplitter[10]+rankSplitter[11]
+                        +rankSplitter[12]+rankSplitter[13]
+                        +rankSplitter[14]+rankSplitter[15];
+
+//-------------oneTeam Object Created Below---------//
+                oneTeam.team = team;
+                oneTeam.rank = rank;
+                oneTeam.rating = rating;
+    
+                console.log(oneTeam);
+//<<<<<<<<<<<<<GOING TO NEED A POST METHOD HERE>>>>>//
+           }//end of FOR LOOP=SLICER(end)----------------->>
+            }
+        };
+
+
+
+
+
+
+
+
+//////////////////////////////////////////////
+ 
+            
+
+//*********************JQUERY**********************//
+
+
+
+
+
+//==================START GET CALL===================//
+//[[[[[[[[[[[[[BUTTON]]]]]]]]]]]]]//
+app.get('/scrape', function (req, res){
+   var url = 'http://www.laxpower.com/update15/binboy/rating36.php';
+   request(url, function(error, response, html){
+//==========BEG. OF 'IF STATEMENT'================//
+        if(!error){
+//======CHEERIO============//
+            var $ = cheerio.load(html);
+
+
+            var teams, team, rank, rating;
+            var michTeams = { teams : ""};
+
+            //Constructor?
+            var oneTeam = { team : "", rank : "", rating : "", state: "MI"};
+            res.json(scraper);
+
+})//===========END OF GET CALL============//
+
+//================NEW POST CALL=================//
+//****************************************************//
+    //         app.post('/api/michigan', function (req, res){
+
+    //              url = 'http://www.laxpower.com/update15/binboy/rating36.php';
+
+    // request(url, function(error, response, html){
+    //     if(!error){
+    //         var $ = cheerio.load(html);
+    //         var newTeamPoster = new TeamPoster({
+    //                 team: req.body.team,
+    //                 rank: req.body.rank,
+    //                 rating: req.body.rating
+    //             });
+
+
+    //             $('#content_well > div.cs1 > left > dt > dl > div:nth-child(3) > div.cs1 > pre').map(function(){
+    //                     var data = $(this);
+    //                     teams = data.text().split("\n");
+    //                     michTeams.teams = teams;
+    //                     var allTeams  //=?See Mongo Relationships lab
+    //                     =[];
+    //         //-------------------SLICER----------------------//  
+    //                     for(i=13;i<teams.length;i++){
+    //                     teamFile = teams[i];
+    //                     var rankSplitter = teamFile.split('');
+    //         //---------oneTeam-Object-Constructor-------------//
+    //                     rank = rankSplitter[0]+rankSplitter[1]+rankSplitter[2];
+    //                     rating = rankSplitter[30]
+    //                                 +rankSplitter[31]
+    //                                 +rankSplitter[32]
+    //                                 +rankSplitter[33]
+    //                                 +rankSplitter[34];
+    //                     team = rankSplitter[4]+rankSplitter[5]+rankSplitter[6]
+    //                             +rankSplitter[7]+rankSplitter[8]+rankSplitter[9]
+    //                             +rankSplitter[10]+rankSplitter[11]
+    //                             +rankSplitter[12]+rankSplitter[13]
+    //                             +rankSplitter[14]+rankSplitter[15];
+
+    //         //-------------oneTeam Object Created Below---------//
+    //                         oneTeam.team = team;
+    //                         oneTeam.rank = rank;
+    //                         oneTeam.rating = rating;
+                
+    //                         console.log(oneTeam);
+    //         //<<<<<<<<<<<<<GOING TO NEED A POST METHOD HERE>>>>>//
+    //                    }//end of FOR LOOP=SLICER(end)----------------->>
+    //                     }//.map(function)
+    //                    )/
+
+
+    //             newTeamPoster.save(function (err, savedTeamPost){
+    //                 } else {
+    //                     res.json(savedTeamPost);
+    //                     console.log("fucked up again", err);
+    //                 })
+    //             }//=====END OF 'IF STATEMENT'========//
+    //         });
+            
+    //         });
+
+
+
+
+
+
+
+
+app.listen('8081')
+console.log('Magic happens on port 8081');
+exports = module.exports = app;
