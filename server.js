@@ -5,76 +5,170 @@ var cheerio = require('cheerio');
 var app     = express();
 var _ = require('underscore');
 var bodyParser = require('body-parser');
+var mongoose = require('mongoose');
+var cors = require('cors');
+
+var TeamPoster = require("./models/teamPoster");
+//------------Linking to Public Folder------//
 app.use(bodyParser.urlencoded({extended: true}));
+app.use(express.static(__dirname + '/public'));
+// mongoose.connect('mongodb://localhost/laxdb');
+//*********************FIX BELOW****************//
+mongoose.connect(
+  process.env.MONGOLAB_URI ||
+  process.env.MONGOHQ_URL ||
+  'mongodb://localhost/laxdb' // plug in the db name you've been using
+);
+
+//-------CORS BEERS--------//
+app.use(cors());
+// var corsOptions = {
+//   origin: 'https://laxrank.herokuapp.com/api/datapop'
+// };
+//----------------------ROUTES---------------------//
+
+
+//GET route that reads DataBase (lloks same as scrape)
+// app.get('/national', function (req, res){
+//render json?????
+// });
+app.get('/national', function (req, res){
+    var national = __dirname + "/public/views/national.html";
+    res.sendFile(national);
+
+});
+
+
+
+//------------------DATA/API Objects-------------------//
+var allTeams  =[];
+var allURL = [];
+
+//-----------------ROOT Route---------------------//
+app.get('/', function (req, res){
+  var index = __dirname + "/public/views/index.html";
+  res.sendFile(index);
+});
+
+app.get('/api/teams', function (req, res){
+  TeamPoster.find(function (err, foundTeams){
+    res.json(foundTeams);
+  })
+})
+
+
+
 
 
 //=============================START GET CALL======================//
-var allTeams  =[];
-//[[[[[[[[[[[[[BUTTON]]]]]]]]]]]]]//
-app.get('/scrape', function (req, res){
-   url = 'http://www.laxpower.com/update15/binboy/rating36.php';
+                    //[[[[[[[[[[[[[BUTTON]]]]]]]]]]]]]//
+app.get('/api/datapop', function (req, res){
+   url = 'http://www.laxpower.com/update15/binboy/natlccr.php';
    
     request(url, function(error, response, html){
 //==========BEG. OF 'IF STATEMENT'=====================//
-
         if(!error){
             var $ = cheerio.load(html);
-            var teams, team, rank, rating;
-            var michTeams = { teams : ""};
-            // var oneTeam = { team : "", rank : "", rating : ""};
-            // var allTeams  =[];//=?See Mongo Relationships lab
-
+            var teams, teamName, natRank, rating, teamLinks;//record
+            var natTeams = { teams : ""};
+$('#content_well > div.cs1 > left > dt > dl > div.cs1 > pre > a').filter(function(){
+        var data = $(this);
+        linker = data.attr(); //{href: "XHASPA.PHP"}
+        allURL.push(linker.href);
+    })
 //*********************JQUERY**********************//
-            $('#content_well > div.cs1 > left > dt > dl > div:nth-child(3) > div.cs1 > pre').map(function(){
-
-
-                                          
+            $('#content_well > div.cs1 > left > dt > dl > div.cs1 > pre').map(function(){                 
                 var data = $(this);
+                links = data.attr('a');
                 teams = data.text().split("\n");
-                michTeams.teams = teams;
+                natTeams.teams = teams;
 
 //-------------------SLICER----------------------//  
-                for(i=13;i<teams.length;i++){
+                for(i=7;i<teams.length;i++){
                 teamFile = teams[i];
                 var rankSplitter = teamFile.split('');
-                var oneTeam = { team : "", rank : "", rating : ""};
-                rank = rankSplitter[0]+rankSplitter[1]+rankSplitter[2];
+                
+                var oneTeam = { 
+                teamName : "",
+                state : "",
+                natRank : "",
+                record : "",
+                powerRating : "",
+                teamURL : ""}
 
-                rating= rankSplitter[30]
-                        +rankSplitter[31]
-                        +rankSplitter[32]
-                        +rankSplitter[33]
-                        +rankSplitter[34];
+                natRank =   rankSplitter[1]+rankSplitter[2]+
+                            rankSplitter[3]+rankSplitter[4];
 
-                team =  rankSplitter[4]
-                        +rankSplitter[5]
-                        +rankSplitter[6]
-                        +rankSplitter[7]
-                        +rankSplitter[8]
-                        +rankSplitter[9]
-                        +rankSplitter[10]
-                        +rankSplitter[11]
-                        +rankSplitter[12]
-                        +rankSplitter[13]
-                        +rankSplitter[14]
-                        +rankSplitter[15];
+                teamName =  rankSplitter[6]+rankSplitter[7]
+                            +rankSplitter[8]+rankSplitter[9]
+                            +rankSplitter[10]+rankSplitter[11]
+                            +rankSplitter[12]+rankSplitter[13]
+                            +rankSplitter[14]+rankSplitter[15]
+                            +rankSplitter[16]+rankSplitter[17]
+                            +rankSplitter[18]+rankSplitter[19]
+                            +rankSplitter[20]+rankSplitter[21]
+                            +rankSplitter[22]+rankSplitter[23]
+                            +rankSplitter[24]+rankSplitter[25];
 
-                oneTeam.team = team;
-                oneTeam.rank = rank;
-                oneTeam.rating = rating;
+                state =     rankSplitter[32]+rankSplitter[33];
+
+                record =    rankSplitter[36]+rankSplitter[37]
+                            +rankSplitter[38]+rankSplitter[39]
+                            +rankSplitter[40]+rankSplitter[41]
+                            +rankSplitter[42]+rankSplitter[43]
+                            +rankSplitter[44]+rankSplitter[45];
+
+                powerRating=rankSplitter[64]+rankSplitter[65]
+                            +rankSplitter[66]+rankSplitter[67]
+                            +rankSplitter[67];            
+
+
+                oneTeam.natRank = natRank;            
+                oneTeam.teamName = teamName;
+                oneTeam.state = state;
+                oneTeam.record = record;
+                oneTeam.powerRating = powerRating;
+                oneTeam.teamURL = allURL[i-5];
+
+                console.log(allURL[i-5]);
 
                 allTeams.push(oneTeam);
-                console.log(oneTeam);
 
-           }//end of FOR LOOP-----------SLICER(end)----------------->>
-            }//.map(function)
-           )//***jQuery(end)
+                var newTeam = new TeamPoster(oneTeam);
+                newTeam.save();
+
+                }//end of FOR LOOP-----------SLICER(end)----------------->>
+            }//___________________________.map(function)
+            )//___________________________***jQuery(end)
             res.json(allTeams);
 
-        }//==========END OF 'IF STATEMENT'=====================//
-    });//end of REQUEST
-})//==============================END OF GET CALL==============//
+            var haverford = allTeams[0];
+            console.log(haverford);
+        //=============END OF POST CALL ==================//
+        }//=======END OF 'IF STATEMENT'=====================//
+    });//_________End of REQUEST________________________
+});//==============END OF GET CALL==============//
 
-app.listen('8081')
+//-----------------------!TO-DO!---------------------//
+// Dummy data
+// Seed into mongoose (shcema) -- lives here, in server.js
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+app.listen(process.env.PORT || 8081)
 console.log('Magic happens on port 8081');
 exports = module.exports = app;
