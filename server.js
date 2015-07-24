@@ -6,7 +6,6 @@ var app     = express();
 var _ = require('underscore');
 var bodyParser = require('body-parser');
 var mongoose = require('mongoose');
-var cors = require('cors');
 
 var TeamPoster = require("./models/teamPoster");
 //------------Linking to Public Folder------//
@@ -19,19 +18,8 @@ mongoose.connect(
   process.env.MONGOHQ_URL ||
   'mongodb://localhost/laxdb' // plug in the db name you've been using
 );
-
-//-------CORS BEERS--------//
-app.use(cors());
-// var corsOptions = {
-//   origin: 'https://laxrank.herokuapp.com/api/datapop'
-// };
 //----------------------ROUTES---------------------//
 
-
-//GET route that reads DataBase (lloks same as scrape)
-// app.get('/national', function (req, res){
-//render json?????
-// });
 app.get('/national', function (req, res){
     var national = __dirname + "/public/views/national.html";
     res.sendFile(national);
