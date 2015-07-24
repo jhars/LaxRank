@@ -16,36 +16,29 @@
 <div data-role="page" id="pageone" data-theme="a">
   <div data-role="panel" id="myPanel"> 
     <h2>LaxRanks</h2>
-    <!-- <ul data-role="listview"> -->
-      
+
     <div data-role="controlgroup" data-type="vertical">
-      <a href="#" class="ui-btn">National Top 50</a>
+      <a href="/national" class="ui-btn">National Top 50</a>
       <a href="#" class="ui-btn">Rankings (State)</a>
       <a href="#" class="ui-btn">My Teams</a>
       <a href="#" class="ui-btn">Login / Register</a>
     </div>
   </div> 
+  <div data-role="header">
+    <h1>LaxRank</h1>
+    <a href="#myPanel" class="ui-btn ui-btn-inline ui-corner-all ui-shadow">Home</a>
+  </div> 
+    <div data-role="main" class="ui-content">
+    <p>National Top 25</p>
+    <ul id='national-list'></ul>
+  <!-- <div id='national-list'></div> -->
 
-
-
-
-
-
-  <div data-role="main" class="ui-content">
-    <h2>List Icons:</h2>
-    <ul data-role="listview" data-inset="true" id="national-list">
-      <li data-icon="plus"><a href="#">data-icon="plus"</a></li>
-    </ul>
   </div>
-
-
-
-  
 </div>
 
 <!-- TEAM (ALL) TEMPLATE -->
 <script type="text/template" id="team-template">
-<li data-icon="plus"><a href="#"> 
+<li><a href="#"> 
 <%= natRank %>
 <%= teamName %> 
 <%= state %></a></li>

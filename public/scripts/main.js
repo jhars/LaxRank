@@ -10,7 +10,6 @@ $(function() {//ending Syntax has been deleted
     teamTemplate: _.template($('#team-template').html()),
     
 
-//setup render function to push data to template
     render: function (data) {
       var $teamHtml = $(teamController.teamTemplate(data));
       $('#national-list').append($teamHtml);
