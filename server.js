@@ -38,6 +38,13 @@ app.get('/', function (req, res){
   res.sendFile(index);
 });
 
+app.get('/register', function (req, res){
+  var register = __dirname + "/public/views/register.html";
+  res.sendFile(register);
+
+});
+
+
 app.get('/api/teams', function (req, res){
   TeamPoster.find(function (err, foundTeams){
     res.json(foundTeams);
@@ -157,6 +164,6 @@ $('#content_well > div.cs1 > left > dt > dl > div.cs1 > pre > a').filter(functio
 
 
 
-app.listen(process.env.PORT || 8081)
-console.log('Magic happens on port 8081');
+app.listen(process.env.PORT || 3000)
+console.log('Magic happens on port 3000');
 exports = module.exports = app;
