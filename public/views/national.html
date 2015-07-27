@@ -39,20 +39,48 @@
   </div> 
     <div data-role="main" class="ui-content">
     <h1>National Top 100</h1>
-    <ul id='national-list'></ul>
+      <table data-role="table" id="national-table" data-mode="columntoggle" class="ui-body-d ui-shadow table-stripe ui-responsive">
+         <thead>
+           <tr class="ui-bar-d">
+             <th>Rank</th>
+             <th>Team Name</th>
+             <th>State</th>
+             <th>Add Favs</th>
+           </tr>
+         </thead>
+         <tbody id="national-list">
+         <!--    THIS IS WHERE TEMPLATE GOES -->  
+         </tbody>
+       </table>  
   <!-- <div id='national-list'></div> -->
 </div>
 
 
 <!-- TEAM (ALL) TEMPLATE -->
 <script type="text/template" id="team-template">
-<li><a href="#"> 
-<%= natRank %>
-<%= teamName %> 
-<%= state %></a></li>
+<tr>
+  <th><%= natRank %></th>
+  <td><a href="#" data-rel="external"><%= teamName %></a></td>
+  <td><%= state %></td>
+  <td><a href="#" class="ui-btn ui-corner-all ui-icon-plus ui-btn-icon-notext">Plus Icon</a><td>
+</tr>
 </script>
 
-    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 <!-- ////////////////////////////////////////// -->
 <!-- Include the jQuery library -->

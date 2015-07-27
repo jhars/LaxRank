@@ -125,7 +125,7 @@ $('#content_well > div.cs1 > left > dt > dl > div.cs1 > pre > a').filter(functio
                 oneTeam.powerRating = powerRating;
                 oneTeam.teamURL = allURL[i-5];
 
-                console.log(allURL[i-5]);
+                // console.log(allURL[i-5]);
 
                 allTeams.push(oneTeam);
 
@@ -138,7 +138,7 @@ $('#content_well > div.cs1 > left > dt > dl > div.cs1 > pre > a').filter(functio
             res.json(allTeams);
 
             var haverford = allTeams[0];
-            console.log(haverford);
+            // console.log(haverford);
         //=============END OF POST CALL ==================//
         }//=======END OF 'IF STATEMENT'=====================//
     });//_________End of REQUEST________________________
