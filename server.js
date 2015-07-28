@@ -41,7 +41,6 @@ app.get('/', function (req, res){
 app.get('/register', function (req, res){
   var register = __dirname + "/public/views/register.html";
   res.sendFile(register);
-
 });
 
 

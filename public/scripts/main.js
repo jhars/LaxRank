@@ -1,7 +1,5 @@
-$(function() {//ending Syntax has been deleted
-// var $menuNational = $('#menu-national');//search button
-// var $nationalList = $('#national-list');
-// template: _.template($('#team-template').html());
+$(function() {
+
 
 $(document).ajaxStart(function () {
    // show loading indicator
@@ -34,7 +32,7 @@ $(document).ajaxStop(function()
     all: function () {
       $.ajax ({
         type: 'GET',
-        url: '/api/datapop',
+        url: '/api/teams',
         success: function (data) {
           var allTeams = data;
           // console.log(allTeams);
