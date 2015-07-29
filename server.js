@@ -1,36 +1,59 @@
 var express = require('express');
-var fs = require('fs');
+// var fs = require('fs');
 var request = require('request');
 var cheerio = require('cheerio');
 var app     = express();
 var _ = require('underscore');
 var bodyParser = require('body-parser');
 var mongoose = require('mongoose');
-
+//need Log, User, session
+// var MyLeague = require('.models/myLeaguePoster');
+var UserPoster = require('./models/userPoster');
+var session = require('express-session');
 var TeamPoster = require("./models/teamPoster");
-//------------Linking to Public Folder------//
-app.use(bodyParser.urlencoded({extended: true}));
-app.use(express.static(__dirname + '/public'));
-// mongoose.connect('mongodb://localhost/laxdb');
-//*********************FIX BELOW****************//
+
+//*********************DB Connect****************//
 mongoose.connect(
   process.env.MONGOLAB_URI ||
   process.env.MONGOHQ_URL ||
   'mongodb://localhost/laxdb' // plug in the db name you've been using
 );
-//----------------------ROUTES---------------------//
+//body-parser
+app.use(bodyParser.urlencoded({extended: true}));
+//------------Linking to Public Folder------//
+app.use(express.static(__dirname + '/public'));
 
-app.get('/national', function (req, res){
-    var national = __dirname + "/public/views/national.html";
-    res.sendFile(national);
+app.use(session({
+  saveUninitialized: true,
+  resave: true,
+  secret: 'SuperSecretCookie',
+  cookie: { maxAge: 600000 }//10 minutes
+}));
 
+//-----------------MiddleWare---------------//
+app.use('/', function (req, res, next) {
+  // saves userId in session for logged-in user
+  req.login = function (user) {
+    req.session.userId = user.id;
+  };
+//-------------Changed .use route HERE-------//
+  // finds user currently logged in based on `session.userId`
+  req.currentUser = function (callback) {
+    UserPoster.findOne({_id: req.session.userId}, function (err, user) {
+      req.user = user;
+      callback(null, user);
+    });
+  };
+
+  // destroy `session.userId` to log out user
+  req.logout = function () {
+    req.session.userId = null;
+    req.user = null;
+  };
+
+  next();
 });
-
-
-
-//------------------DATA/API Objects-------------------//
-var allTeams  =[];
-var allURL = [];
+//-------MiddleWare (end)--------//
 
 //-----------------ROOT Route---------------------//
 app.get('/', function (req, res){
@@ -42,6 +65,90 @@ app.get('/register', function (req, res){
   var register = __dirname + "/public/views/register.html";
   res.sendFile(register);
 });
+
+//-------------MyLeague Route-----------//
+// app.get('/myLeague', function (req, res){
+//     req.currentUser(function (err, user){
+//         if (user) {
+//             res.sendFile(__dirname + '/public/views/myleague.html');
+//         } else {
+//             res.redirect('/');
+//         }
+//     });
+// });
+
+//-------------Auth Routes-----------//
+
+
+//++++++WORKNG ROUTE(s)++++++++//
+// create new user with secure password
+//POST
+app.post('/users', function (req, res) {
+  var newUser = req.body.user;
+  UserPoster.createSecure(newUser, function (err, user) {
+    // log in user immediately when created
+    req.login(user);
+    res.redirect('/');
+  });
+});
+
+
+//  - - - - -Wrk Rts end- - - - - - //
+
+
+// authenticate user and set session
+app.post('/login', function (req, res) {
+  var userData = req.body.user;
+  UserPoster.authenticate(userData.email, function (err, user) {
+    // req.login(user);//??????????
+    res.redirect('/');
+  });
+});
+
+// log out user (destroy session)
+app.get('/logout', function (req, res) {
+  req.logout();
+  res.redirect('/');
+});
+
+// show current user
+app.get('/api/users/current', function (req, res) {
+  // check for current (logged-in) user
+  req.currentUser(function (err, user) {
+    if (currentUser){//ERROR CODE HERE!!!!!
+        res.send(user);
+    } else {
+        res.send('no current user');
+        console.log('user not signed in');
+    }
+    
+  });
+});
+//////////////////////////////
+//League (logs here)
+
+
+
+
+
+
+
+
+
+//----------------------ALL TEAMS ROUTE---------------------//
+
+app.get('/national', function (req, res){
+    var national = __dirname + "/public/views/national.html";
+    res.sendFile(national);
+});
+
+//------------------DATA/API Objects-------------------//
+var allTeams  =[];
+var allURL = [];
+
+//-----------------ROOT Route---------------------//
+
+
 
 
 app.get('/api/teams', function (req, res){

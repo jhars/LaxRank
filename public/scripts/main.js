@@ -1,58 +1,28 @@
 $(function() {
 
+  // `mainController` holds shared site functionality
+  var mainController = {
 
-$(document).ajaxStart(function () {
-   // show loading indicator
-   $.mobile.loading( 'show', {
-       text: 'Loading...',
-       textVisible: false,
-       theme: 'b',
-       html: ""
-   });
-});
+    // compile underscore template for nav links
+    userTemplate: _.template($('#user-template').html()),
 
-$(document).ajaxStop(function() 
-{
-   // hide loading indicator
-   $.mobile.loading( 'hide' );
-});
+    // get current (logged-in) user
+    showCurrentUser: function() {
+      ///////////////////////////////////
+      // AJAX call to SERVER to GET /api/users/current
+      //////////////////////////////////
+      $.get('/api/users/current', function(user) {
+        console.log(user);
 
-  console.log('loaded');
-  var teamController= { 
- 
-    teamTemplate: _.template($('#team-template').html()),
-    
+        // pass current user through template for nav links
+        $navHtml = $(mainController.userTemplate({currentUser: user}));
 
-    render: function (data) {
-      var $teamHtml = $(teamController.teamTemplate(data));
-      $('#national-list').append($teamHtml);
-    },
+        // append HTML to page
+        $('#user-greet').append($navHtml);
+      });
+    }
+  };
 
-//setup view on home page
-    all: function () {
-      $.ajax ({
-        type: 'GET',
-        url: '/api/teams',
-        success: function (data) {
-          var allTeams = data;
-          // console.log(allTeams);
-          _.each(allTeams, function(teamObj) {
-            if(teamObj.natRank){//Smooth "IF" statement right here
-            teamController.render(teamObj);
-          }
-          });
-          // teamController.addEventHandlers();
-        }
-      })
-      console.log("refreshed")
-    },
+  mainController.showCurrentUser();
 
-      setupView: function() {
-        teamController.all();
-      }
-    
-
-
-  }; //end gameController
-  teamController.setupView();
 });

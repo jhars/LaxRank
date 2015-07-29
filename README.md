@@ -1,6 +1,13 @@
+ROUTES UPDATE:
 
-MongoDB
+Post (new)user works >> mongDB object
+login seems to work
+logout seems to work
 
+
+/api/users/current breaks the code
+Breaking on current User js.118
+====================================
 
 Authentication (requirements)
 login/register

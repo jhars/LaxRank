@@ -24,6 +24,17 @@
   <div data-role="panel" id="myPanel"> 
     <h2>LaxRanks</h2>
 
+    <div id="user-greet">
+    <p>Yo Yo</p>
+      <script type="text/template" id="user-template">
+        <% if (currentUser) { %>
+          <p>Welcome, <%= userName %></p>
+        <% } else { %>
+          <p>Not Signed In</p>
+        <% } %>
+      </script> 
+           
+    </div>
     <div data-role="controlgroup" data-type="vertical">
       <a href="/" class="ui-btn">GA-DEMO</a>
       <a href="/national" class="ui-btn">National Top 100</a>
@@ -100,6 +111,8 @@
 <!-- Latest compiled and minified JavaScript -->
 <!-- <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script> -->
 <!-- client-side javascript -->
-<script type="text/javascript" src="scripts/main.js"></script>
+<!-- <script type="text/javascript" src="scripts/main.js"></script> -->
+<script type="text/javascript" src="scripts/national.js"></script>
+
 </body>
 </html>
