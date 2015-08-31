@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
+<head>
   <meta charset="utf-8">
   <!-- =======Mobile Styling Below======== -->
 <!-- Include meta tag to ensure proper rendering and touch zooming -->
@@ -14,87 +14,33 @@
 
 <!-- Include the jQuery Mobile library -->
 <script src="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
-
-
-  <!-- =======Mobile Styling Above======== -->
-  </head>
+</head>
   <body>
 <div data-role="page" id="pageone" data-theme="a">
-
   <div data-role="panel" id="myPanel"> 
     <h2>LaxRanks</h2>
 
-    <div id="user-greet">
-    <p>Yo Yo</p>
-      <script type="text/template" id="user-template">
-        <% if (currentUser) { %>
-          <p>Welcome, <%= userName %></p>
-        <% } else { %>
-          <p>Not Signed In</p>
-        <% } %>
-      </script> 
-           
-    </div>
     <div data-role="controlgroup" data-type="vertical">
       <a href="/" class="ui-btn">GA-DEMO</a>
       <a href="/national" class="ui-btn">National Top 100</a>
       <a href="#" class="ui-btn">Rankings (State)</a>
       <a href="#" class="ui-btn">My Teams</a>
       <a href="/register" class="ui-btn">Register</a>
-  </div>
-  </div>
 
+
+    </div>
+  </div> 
   <div data-role="header">
     <h1>LaxRank</h1>
     <a href="#myPanel" class="ui-btn ui-btn-inline ui-corner-all ui-shadow">Home</a>
-  </div> 
-    <!-- <div data-role="main" id = "national-list" class="ui-content">
-    <p>National Top 25</p>
-
-    <div data-role="controlgroup" id="national-list" data-type="vertical">
-      
-    </div> -->
-
-  <div data-role="main" class="ui-content">
-    <h2>National Rankings</h2>
-    <ul data-role="listview" id="national-list">
-
-    </ul>
-  </div>
-
-
-
-
-  
   </div>
     <div data-role="main" class="ui-content">
-    <h1>National Top 100</h1>
-      <table data-role="table" id="national-table" data-mode="columntoggle:none" class="ui-body-d ui-shadow table-stripe ui-responsive">
-         <thead>
-           <tr class="ui-bar-d">
-             <th>Rank</th>
-             <th>Team Name</th>
-             <th>State</th>
-             <th>Follow</th>
-           </tr>
-         </thead>
-         <tbody id="national-list">
-         <!--    THIS IS WHERE TEMPLATE GOES -->  
-         </tbody>
-       </table>  
+    <img src="http://i.imgur.com/FPSLXCT.png" title="source: imgur.com">
+
+  <!-- <div id='national-list'></div> -->
+
+  </div>
 </div>
-
-
-<!-- TEAM (ALL) TEMPLATE -->
-<script type="text/template" id="team-template">
-<tr>
-  <th><%= natRank %></th>
-  <td><a href="#" data-rel="external"><%= teamName %></a></td>
-  <td><%= state %></td>
-  <td><a href="#" class="ui-btn ui-corner-all ui-icon-plus ui-btn-icon-notext">Plus Icon</a><td>
-</tr>
-</script>
-
 
 <!-- ////////////////////////////////////////// -->
 <!-- Include the jQuery library -->
@@ -114,8 +60,7 @@
 <!-- Latest compiled and minified JavaScript -->
 <!-- <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script> -->
 <!-- client-side javascript -->
-<!-- <script type="text/javascript" src="scripts/main.js"></script> -->
-<script type="text/javascript" src="scripts/national.js"></script>
-
+<script type="text/javascript" src="scripts/main.js"></script>
+<script type="text/javascript" src="scripts/register.js"></script>
 </body>
 </html>

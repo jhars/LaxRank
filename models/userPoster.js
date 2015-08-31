@@ -15,6 +15,28 @@ var UserPosterSchema = new Schema({
 UserPosterSchema.statics.createSecure = function (userData, callback) {
   // `this` references our schema
   // store it in variable `that` because `this` changes context in nested callbacks
+//////////////////////////////////////////////
+// // require mongoose and other modules
+// var mongoose = require('mongoose'),
+//     Schema = mongoose.Schema,
+//     bcrypt = require('bcrypt'),
+//     salt = bcrypt.genSaltSync(10);
+//  	//myLeaguePoster Here
+// //++++++WORKNG ROUTE(s)++++++++//
+//  var UserPosterSchema = new Schema({
+//  	userName: String,
+//  	email: String,
+//  	passwordDigest: String
+//  	// myLeague: [MyLeague.schema]
+//  });/////////FIX THIS LATER///////////
+
+//  // create a new user with secure (hashed) password
+// UserPosterSchema.statics.createSecure = function (userData, callback) {
+//   // `this` references our schema
+//   // store it in variable `that` because `this` changes context in nested callbacks
+//   console.log(userData + 'userDattttta');
+///////////////////////////////////////////////
+
   var that = this;
 
   // hash password user enters at sign up
@@ -24,12 +46,15 @@ UserPosterSchema.statics.createSecure = function (userData, callback) {
 
       // create the new user (save to db) with hashed password
       that.create({
+        userName: userData.userName,
         email: userData.email,
         passwordDigest: hash
       }, callback);
     });
   });
 };
+
+
 
 // authenticate user (when user logs in)
 UserPosterSchema.statics.authenticate = function (email, password, callback) {
@@ -39,10 +64,10 @@ UserPosterSchema.statics.authenticate = function (email, password, callback) {
 
     // throw error if can't find user
     if (user === null) {
-      throw new Error('Can\'t find user with email ' + email);
-
+      console.log('no user found!!');
     // if found user, check if password is correct
-    } else if (user.checkPassword(password)) {
+    } else {
+    user.checkPassword(password);
       callback(null, user);
     }
   });
@@ -55,5 +80,5 @@ UserPosterSchema.methods.checkPassword = function (password) {
 };
 
 // create and export User model
-var User = mongoose.model('UserPoster', UserPosterSchema);
-module.exports = User;
+var UserPoster = mongoose.model('UserPoster', UserPosterSchema);
+module.exports = UserPoster;

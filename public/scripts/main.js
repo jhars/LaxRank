@@ -1,20 +1,18 @@
-$(function() {//ending Syntax has been deleted
-// var $menuNational = $('#menu-national');//search button
-// var $nationalList = $('#national-list');
-// template: _.template($('#team-template').html());
+$(function() {
 
+  // `mainController` holds shared site functionality
+  var mainController = {
 
-  console.log('loaded');
-  var teamController= { 
- 
-    teamTemplate: _.template($('#team-template').html()),
-    
+    // compile underscore template for nav links
+    userTemplate: _.template($('#user-template').html()),
 
-//setup render function to push data to template
-    render: function (data) {
-      var $teamHtml = $(teamController.teamTemplate(data));
-      $('#national-list').append($teamHtml);
-    },
+    // get current (logged-in) user
+    showCurrentUser: function() {
+      ///////////////////////////////////
+      // AJAX call to SERVER to GET /api/users/current
+      //////////////////////////////////
+      $.get('/api/users/current', function(user) {
+        console.log(user);
 
 //setup view on home page
     all: function () {
@@ -34,13 +32,15 @@ $(function() {//ending Syntax has been deleted
       })
       console.log("refreshed")
     },
+        // pass current user through template for nav links
+        // $navHtml = $(mainController.userTemplate({currentUser: user}));
 
-      setupView: function() {
-        teamController.all();
-      }
-    
+        // append HTML to page
+        $('#user-greet').append($navHtml);
+      });
+    }
+  };
 
+  mainController.showCurrentUser();
 
-  }; //end gameController
-  teamController.setupView();
 });

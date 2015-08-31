@@ -1,5 +1,5 @@
 var express = require('express');
-var fs = require('fs');
+// var fs = require('fs');
 var request = require('request');
 var cheerio = require('cheerio');
 var app     = express();
@@ -15,13 +15,15 @@ var TeamPoster = require("./models/teamPoster");
 //------------Linking to Public Folder------//
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(express.static(__dirname + '/public'));
-// mongoose.connect('mongodb://localhost/laxdb');
-//*********************FIX BELOW****************//
 mongoose.connect(
   process.env.MONGOLAB_URI ||
   process.env.MONGOHQ_URL ||
   'mongodb://localhost/laxdb' // plug in the db name you've been using
 );
+//body-parser
+app.use(bodyParser.urlencoded({extended: true}));
+//------------Linking to Public Folder------//
+app.use(express.static(__dirname + '/public'));
 
 //-------CORS BEERS--------//
 // app.use(cors());
@@ -180,16 +182,34 @@ app.get('/national', function (req, res){
     var national = __dirname + "/public/views/national.html";
     res.sendFile(national);
 
+//-------------Auth Routes-----------//
+
+
+//++++++WORKNG ROUTE(s)++++++++//
+// create new user with secure password
+//POST
+app.post('/users', function (req, res) {
+  var newUser = req.body.user;
+  UserPoster.createSecure(newUser, function (err, user) {
+    // log in user immediately when created
+    req.login(user);
+    res.redirect('/');
+  });
 });
+
+
+//  - - - - -Wrk Rts end- - - - - - //
+
+
+
 //------------------DATA/API Objects-------------------//
 var allTeams  =[];
 var allURL = [];
 
 //-----------------ROOT Route---------------------//
-app.get('/', function (req, res){
-  var index = __dirname + "/public/views/index.html";
-  res.sendFile(index);
-});
+
+
+
 
 app.get('/api/teams', function (req, res){
   TeamPoster.find(function (err, foundTeams){
@@ -272,7 +292,7 @@ $('#content_well > div.cs1 > left > dt > dl > div.cs1 > pre > a').filter(functio
                 oneTeam.powerRating = powerRating;
                 oneTeam.teamURL = allURL[i-5];
 
-                console.log(allURL[i-5]);
+                // console.log(allURL[i-5]);
 
                 allTeams.push(oneTeam);
 
@@ -285,7 +305,7 @@ $('#content_well > div.cs1 > left > dt > dl > div.cs1 > pre > a').filter(functio
             res.json(allTeams);
 
             var haverford = allTeams[0];
-            console.log(haverford);
+            // console.log(haverford);
         //=============END OF POST CALL ==================//
         }//=======END OF 'IF STATEMENT'=====================//
     });//_________End of REQUEST________________________
@@ -311,6 +331,6 @@ $('#content_well > div.cs1 > left > dt > dl > div.cs1 > pre > a').filter(functio
 
 
 
-app.listen(process.env.PORT || 8081)
-console.log('Magic happens on port 8081');
+app.listen(process.env.PORT || 3000)
+console.log('Magic happens on port 3000');
 exports = module.exports = app;
