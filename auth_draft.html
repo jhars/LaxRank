@@ -1,0 +1,78 @@
+
+<body>
+<!-- method and action refer to the request type (post) and request url (/login) -->
+
+<!-- ================REDGISTRATION FORM =================-->
+        <form method="post" action="/api/users"><!-- change here -->
+          <div class="form-group">
+<!-- form WILL submit automatically , create req.body.user based on name -->
+
+            <!-- the `name` HTML attribute sends form data to the server -->
+            <!-- setting the names `user[email]` and `user[password]` allows us to use `req.body.user` on the server-side, which gives us a user object with `email` and `password` keys -->
+            <input type="text" name="user[email]" class="form-control" placeholder="Email" autofocus>
+            <!-- username/email -->
+          </div>
+          <div class="form-group">
+            <input type="password" name="user[password]" class="form-control" placeholder="Password">
+          </div>
+          <div class="form-group">
+            <input type="submit" value="Sign Up" class="btn btn-primary">
+          </div>
+        </form><!-- having a form with a method and an action-forces page refresh -->
+
+
+<!-- ==========================END REG====================== -->
+<h2 id="loggedInMessage">You're Logged in!.... or not?</h2>
+
+<h2>Log In Form</h2>
+<form id="login-form"><!-- change here -->
+<!-- form will not submit automatically -->
+          <div class="modal-body">
+
+<!-- confirm alterations -->
+            <input type="text" name="login-user-email" class="form-control" placeholder="Email" autofocus>
+            <!-- username/email -->
+          </div>
+          <div class="form-group">
+            <input type="password" name="login-user-password" class="form-control" placeholder="Password">
+          </div>
+          <div class="form-group">
+            <input type="submit" value="Sign Up" class="btn btn-primary">
+          </div>
+        </form>
+
+  <div class="col-sm-8">
+    <ul id="lines">
+    </ul>
+  </div>
+  <div class="col-sm-4">
+    <h3>Pickup</h3>
+    <div class='well'>
+      <form id="new-line">
+        <div class='form-group'>
+          <label for="text">A New Line</label>
+          <input class="form-control" id="line-text" type="text" name="text" placeholder="Hit me with your best shot"/>
+        </div>
+        <div class='text-right'>
+          <button class="btn btn-primary" type="submit">Good Luck!</button>
+          <br>
+          <small class='text-muted'>You're gonna need it...</small>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script id="lineTemplate" type="text/template">
+    <li class='line'>
+      <p class='lead'><%= text %></p>
+    </li>
+  </script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.3/underscore-min.js"></script>
+  <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+  <!-- Latest compiled and minified JavaScript -->
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+  <script src="scripts.js"></script>
+</body>
+</html>

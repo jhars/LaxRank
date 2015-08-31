@@ -9,6 +9,12 @@
 <!-- Include jQuery Mobile stylesheets -->
 <link rel="stylesheet" href="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css">
 
+<!-- Include the jQuery library -->
+<script src="http://code.jquery.com/jquery-1.11.3.min.js"></script>
+
+<!-- Include the jQuery Mobile library -->
+<script src="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
+
 
   <!-- =======Mobile Styling Above======== -->
   </head>
@@ -22,7 +28,8 @@
       <a href="#" class="ui-btn">National Top 50</a>
       <a href="#" class="ui-btn">Rankings (State)</a>
       <a href="#" class="ui-btn">My Teams</a>
-      <a href="#" class="ui-btn">Login / Register</a>
+      <a href="#" class="ui-btn">Login</a>
+      <a href="#" class="ui-btn">Register</a>
     </div>
   </div> 
   <div data-role="header">
@@ -37,13 +44,13 @@
     </div> -->
 
   <div data-role="main" class="ui-content">
-    <h2>A standard list:</h2>
+    <h2>National Rankings</h2>
     <ul data-role="listview" id="national-list">
-      <li><a href="#">List Item</a></li>
-      <li><a href="#">List Item</a></li>
-      <li><a href="#">List Item</a></li>
-    </ul><br>
+
+    </ul>
   </div>
+
+
 
 
   
@@ -53,9 +60,11 @@
 <!-- TEAM (ALL) TEMPLATE -->
 
     <script type="text/template" id="team-template">
-          <li><a href="#"><%= natRank %></a></li>
-          <li><a href="#"><%= teamName %></a></li>
-          <li><a href="#"><%= teamName %></a></li>
+          <li>
+            <a href="#">
+          <%= natRank %> <%= teamName %><%= state %>
+            </a>
+          </li>
     </script>
 
     

@@ -25,8 +25,9 @@ $(function() {//ending Syntax has been deleted
           var allTeams = data;
           console.log(allTeams);
           _.each(allTeams, function(teamObj) {
-            // pass each phrase object through template and append to view
+            if(teamObj.natRank){
             teamController.render(teamObj);
+          }
           });
           // teamController.addEventHandlers();
         }

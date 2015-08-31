@@ -6,9 +6,12 @@ var app     = express();
 var _ = require('underscore');
 var bodyParser = require('body-parser');
 var mongoose = require('mongoose');
-var cors = require('cors');
-
+// var cors = require('cors');
 var TeamPoster = require("./models/teamPoster");
+// var MyTeams = require('./models/myTeamsPoster');
+// var UserPoster = require('./models/userPoster');
+// var session = require('express-session');
+
 //------------Linking to Public Folder------//
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(express.static(__dirname + '/public'));
@@ -21,25 +24,163 @@ mongoose.connect(
 );
 
 //-------CORS BEERS--------//
-app.use(cors());
+// app.use(cors());
 // var corsOptions = {
 //   origin: 'https://laxrank.herokuapp.com/api/datapop'
 // };
 //----------------------ROUTES---------------------//
 
+//=================AUTH ROUTES=====================//
 
-//GET route that reads DataBase (lloks same as scrape)
-// app.get('/national', function (req, res){
-//render json?????
+
+
+
+
+
+
+
+
+
+// app.use(session({
+//   saveUninitialized: true,
+//   resave: true,
+//   secret: 'SuperSecretCookie',
+//   cookie: { maxAge: 60000 }
+// }));
+
+// // middleware to manage sessions
+// app.use('/', function (req, res, next) {
+//   // saves userId in session for logged-in user
+//   req.login = function (user) {
+//     req.session.userId = user.id;
+//   };
+
+//   // finds user currently logged in based on `session.userId`
+//   req.currentUser = function (callback) {
+//     UserPoster.findOne({_id: req.session.userId}, function (err, user) {
+//       req.user = user;
+//       callback(null, user);
+//     });
+//   };
+
+//   // destroy `session.userId` to log out user
+//   req.logout = function () {
+//     req.session.userId = null;
+//     req.user = null;
+//   };
+
+//   next();
 // });
+
+// STATIC ROUTES
+
+// My Teams PAGE (MyTeams)
+// app.get('/myteams', function (req, res) {
+//   // check for current (logged-in) user
+//   req.currentUser(function (err, user) {
+//     // show profile if logged-in user
+//     if (user) {
+//       res.sendFile(__dirname + '/public/views/myteams.html');
+//     // redirect if no user logged in
+//     } else {
+//       res.redirect('/');
+//     }
+//   });
+// });
+
+// // AUTH ROUTES (SIGN UP, LOG IN, LOG OUT)
+
+// // create new user with secure password
+// app.post('/users', function (req, res) {
+//   var newUser = req.body.user;
+//   UserPoster.createSecure(newUser, function (err, user) {
+//     // log in user immediately when created
+//     req.login(user);
+//     res.redirect('/myteams');
+//   });
+// });
+
+// // authenticate user and set session
+// app.post('/login', function (req, res) {
+//   var userData = req.body.user;
+//   UserPoster.authenticate(userData.email, userData.password, function (err, user) {
+//     req.login(user);
+//     res.redirect('/myteams');
+//   });
+// });
+
+// // log out user (destroy session)
+// app.get('/logout', function (req, res) {
+//   req.logout();
+//   res.redirect('/');
+// });
+
+// // API ROUTES
+
+// // show current user
+// app.get('/api/users/current', function (req, res) {
+//   // check for current (logged-in) user
+//   req.currentUser(function (err, user) {
+//     res.json(user);
+//   });
+// });
+
+// // create new log for current user
+// app.post('/api/users/current/myteams', function (req, res) {
+//   // create new log with form data (`req.body`)
+//   var newMyTeams = new MyTeams({
+//     laxteams: req.body.laxteams
+//   });
+
+//   // save new log
+//   newMyTeams.save();
+
+//   // find current user
+//   req.currentUser(function (err, user) {
+//     // embed new log in user's logs
+//     user.myTeams.push(newMyTeams);
+//     // save user (and new log)
+//     user.save();
+//     // respond with new log
+//     res.json(newMyTeams);
+//   });
+// });
+
+// // show all logs
+// app.get('/api/myteams', function (req, res) {
+//   MyTeams.find(function (err, myTeams) {
+//     res.json(myTeams);
+//   });
+// });
+
+// // create new log
+// app.post('/api/myteams', function (req, res) {
+//   // create new log with form data (`req.body`)
+//   var newMyTeams = new MyTeams({
+//     laxteams: req.body.laxteams
+//   });
+
+//   // save new log
+//   newMyTeams.save(function (err, savedMyTeams) {
+//     res.json(savedMyTeams);
+//   });
+// });
+
+
+
+
+
+
+
+
+
+//=================AUTH ROUTES=====================//
+
 app.get('/national', function (req, res){
     var national = __dirname + "/public/views/national.html";
     res.sendFile(national);
 
 });
-
-
-
 //------------------DATA/API Objects-------------------//
 var allTeams  =[];
 var allURL = [];
@@ -58,6 +199,7 @@ app.get('/api/teams', function (req, res){
 
 
 
+//++++++++DO NOT GO TO THIS ROUTE++++++++++++//
 
 
 //=============================START GET CALL======================//
