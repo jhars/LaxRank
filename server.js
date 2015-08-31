@@ -181,6 +181,7 @@ app.use(express.static(__dirname + '/public'));
 app.get('/national', function (req, res){
     var national = __dirname + "/public/views/national.html";
     res.sendFile(national);
+  });
 
 //-------------Auth Routes-----------//
 
@@ -215,7 +216,7 @@ app.get('/api/teams', function (req, res){
   TeamPoster.find(function (err, foundTeams){
     res.json(foundTeams);
   })
-})
+});
 
 
 
@@ -331,6 +332,6 @@ $('#content_well > div.cs1 > left > dt > dl > div.cs1 > pre > a').filter(functio
 
 
 
-app.listen(process.env.PORT || 3000)
+app.listen(process.env.PORT || 3000);
 console.log('Magic happens on port 3000');
 exports = module.exports = app;
